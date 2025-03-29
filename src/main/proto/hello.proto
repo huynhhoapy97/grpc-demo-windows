@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.huynhhoapy97.grpc";
+
+// service
+service HelloService {
+  // api (service method)
+  rpc SayHello (HelloRequest) returns (HelloResponse);
+}
+
+service AddressService {
+  rpc getCityByProvinceId (AddressRequest) returns (AddressResponse);
+}
+
+// message
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+}
+
+message AddressRequest {
+  int32 provinceId = 1;
+}
+
+message AddressResponse {
+  int32 id = 1;
+  string name = 2;
+  repeated City city = 3;
+}
+
+message City {
+  int32 id = 1;
+  string name = 2;
+}

@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'com.google.protobuf' version '0.9.4'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starter
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // gRPC
+    implementation 'net.devh:grpc-spring-boot-starter:2.14.0.RELEASE'
+    implementation 'io.grpc:grpc-netty:1.58.0'
+    implementation 'io.grpc:grpc-protobuf:1.58.0'
+    implementation 'io.grpc:grpc-stub:1.58.0'
+    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.61.Final'
+
+    // Ép Netty dùng NIO (không Epoll)
+    implementation 'io.netty:netty-transport:4.1.94.Final'
+    implementation 'io.netty:netty-handler:4.1.94.Final'
+    implementation 'io.netty:netty-codec-http:4.1.94.Final'
+
+    // Xử lý JSON
+    implementation 'com.google.protobuf:protobuf-java-util:3.22.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.23.4"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
